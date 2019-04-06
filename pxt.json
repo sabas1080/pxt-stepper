@@ -1,10 +1,10 @@
 {
     "name": "pxt-stepper",
-    "version": "0.0.0",
-    "description": "",
-    "dependencies": {
-        "adafruit-metro-m0-express": "*"
-    },
+    "version": "0.0.1",
+    "description": "This library allows you to control unipolar or bipolar stepper motors. To use it you will need a stepper motor, and the appropriate hardware to control it.",
+    "license": "MIT",
+    "autor": "Andres Sabas - Electronic Cats",
+    "dependencies": {},
     "files": [
         "README.md",
         "main.ts"
@@ -13,5 +13,5 @@
         "test.ts"
     ],
     "public": false,
-    "additionalFilePaths": []
+    "preferredEditor": "tsprj"
 }
