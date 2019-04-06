@@ -77,11 +77,13 @@
 namespace stepper {
 
     export class Stepper {
-        motor_pin_1: DigitalInOutPin;
-        motor_pin_2: DigitalInOutPin;
-        motor_pin_3: DigitalInOutPin;
-        motor_pin_4: DigitalInOutPin;
-        motor_pin_5: DigitalInOutPin;
+
+        private _motor_pin_1: DigitalInOutPin;
+        private _motor_pin_2: DigitalInOutPin;
+        private _motor_pin_3: DigitalInOutPin;
+        private _motor_pin_4: DigitalInOutPin;
+        private _motor_pin_5: DigitalInOutPin;
+        
         step_number: number;
         direction: number;
         last_step_time: number;
@@ -89,19 +91,18 @@ namespace stepper {
         pin_count: number;
         step_delay: number;
 
-
-        constructor() {
-            this.step_number = 0    
-            this.direction = 0      
-            this.last_step_time = 0 
-            this.number_of_steps = undefined
-            this.motor_pin_1 = undefined
-            this.motor_pin_2 = undefined
-            this.motor_pin_3 = undefined
-            this.motor_pin_4 = undefined
-            this.motor_pin_5 = undefined
+        constructor(motor_pin_1: DigitalInOutPin, motor_pin_2: DigitalInOutPin, motor_pin_3: DigitalInOutPin, motor_pin_4: DigitalInOutPin, motor_pin_5: DigitalInOutPin) {
+            this.step_number = 0;    
+            this.direction = 0;   
+            this.last_step_time = 0;
+            this.number_of_steps = undefined;
+            this._motor_pin_1 = motor_pin_1;
+            this._motor_pin_2 = motor_pin_2;
+            this._motor_pin_3 = motor_pin_3;
+            this._motor_pin_4 = motor_pin_4;
+            this._motor_pin_5 = motor_pin_5;
         }
-
+    
         /*
          * two-wire constructor.
          * Sets which wires should control the motor.
@@ -117,8 +118,6 @@ namespace stepper {
             this.motor_pin_2 = motor_pin_2;
 
             // setup the pins on the microcontroller:
-            //motor_pin_1: DigitalInOutPin;
-            //motor_pin_2: DigitalInOutPin;
             //pinMode(this.motor_pin_1, OUTPUT);
             //pinMode(this.motor_pin_2, OUTPUT);
 
@@ -143,25 +142,20 @@ namespace stepper {
             this.number_of_steps = number_of_steps; // total number of steps for this motor
 
             // Arduino pins for the motor control connection:
-            this.motor_pin_1 = motor_pin_1;
-            this.motor_pin_2 = motor_pin_2;
-            this.motor_pin_3 = motor_pin_3;
-            this.motor_pin_4 = motor_pin_4;
-
+            /*this._motor_pin_1 = motor_pin_1;
+            this._motor_pin_2 = motor_pin_2;
+            this._motor_pin_3 = motor_pin_3;
+            this._motor_pin_4 = motor_pin_4;
+            */
             // setup the pins on the microcontroller:
-            /*
-            motor_pin_1: DigitalInOutPin;
-            motor_pin_2: DigitalInOutPin;
-            motor_pin_3: DigitalInOutPin;
-            motor_pin_4: DigitalInOutPin;
-*/
             //pinMode(this.motor_pin_1, OUTPUT);
             //pinMode(this.motor_pin_2, OUTPUT);
             //pinMode(this.motor_pin_3, OUTPUT);
             //pinMode(this.motor_pin_4, OUTPUT);
 
             // When there are 4 pins, set the others to 0:
-            this.motor_pin_5 = 0;
+            //this._motor_pin_5 = 0;
+            this._motor_pin_5.digitalWrite(false);
 
             // pin_count is used by the stepMotor() method:
             this.pin_count = 4;
@@ -185,13 +179,7 @@ namespace stepper {
             this.motor_pin_4 = motor_pin_4;
             this.motor_pin_5 = motor_pin_5;
 
-            // setup the pins on the microcontroller:
-            motor_pin_1: DigitalInOutPin;
-            //motor_pin_2: DigitalInOutPin;
-            //motor_pin_3: DigitalInOutPin;
-            //motor_pin_4: DigitalInOutPin;
-            //motor_pin_5: DigitalInOutPin;
-            
+            // setup the pins on the microcontroller:            
             //pinMode(this.motor_pin_1, OUTPUT);
             //pinMode(this.motor_pin_2, OUTPUT);
             //pinMode(this.motor_pin_3, OUTPUT);
@@ -215,48 +203,48 @@ namespace stepper {
             if (this.pin_count == 2) {
                 switch (thisStep) {
                     case 0:  // 01
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(true);
                         break;
                     case 1:  // 11
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(true);
                         break;
                     case 2:  // 10
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(false);
                         break;
                     case 3:  // 00
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(false);
                         break;
                 }
             }
             if (this.pin_count == 4) {
                 switch (thisStep) {
                     case 0:  // 1010
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(false);
-                        this.motor_pin_3.digitalWrite(true);
-                        this.motor_pin_4.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(false);
+                        this._motor_pin_3.digitalWrite(true);
+                        this._motor_pin_4.digitalWrite(false);
                         break;
                     case 1:  // 0110
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(true);
-                        this.motor_pin_3.digitalWrite(true);
-                        this.motor_pin_4.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(true);
+                        this._motor_pin_3.digitalWrite(true);
+                        this._motor_pin_4.digitalWrite(false);
                         break;
                     case 2:  //0101
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(true);
-                        this.motor_pin_3.digitalWrite(false);
-                        this.motor_pin_4.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(true);
+                        this._motor_pin_3.digitalWrite(false);
+                        this._motor_pin_4.digitalWrite(true);
                         break;
                     case 3:  //1001
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(false);
-                        this.motor_pin_3.digitalWrite(false);
-                        this.motor_pin_4.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(false);
+                        this._motor_pin_3.digitalWrite(false);
+                        this._motor_pin_4.digitalWrite(true);
                         break;
                 }
             }
@@ -264,74 +252,74 @@ namespace stepper {
             if (this.pin_count == 5) {
                 switch (thisStep) {
                     case 0:  // 01101
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(true);
-                        this.motor_pin_3.digitalWrite(true);
-                        this.motor_pin_4.digitalWrite(false);
-                        this.motor_pin_5.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(true);
+                        this._motor_pin_3.digitalWrite(true);
+                        this._motor_pin_4.digitalWrite(false);
+                        this._motor_pin_5.digitalWrite(true);
                         break;
                     case 1:  // 01001
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(true);
-                        this.motor_pin_3.digitalWrite(false);
-                        this.motor_pin_4.digitalWrite(false);
-                        this.motor_pin_5.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(true);
+                        this._motor_pin_3.digitalWrite(false);
+                        this._motor_pin_4.digitalWrite(false);
+                        this._motor_pin_5.digitalWrite(true);
                         break;
                     case 2:  // 01011
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(true);
-                        this.motor_pin_3.digitalWrite(false);
-                        this.motor_pin_4.digitalWrite(true);
-                        this.motor_pin_5.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(true);
+                        this._motor_pin_3.digitalWrite(false);
+                        this._motor_pin_4.digitalWrite(true);
+                        this._motor_pin_5.digitalWrite(true);
                         break;
                     case 3:  // 01010
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(true);
-                        this.motor_pin_3.digitalWrite(false);
-                        this.motor_pin_4.digitalWrite(true);
-                        this.motor_pin_5.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(true);
+                        this._motor_pin_3.digitalWrite(false);
+                        this._motor_pin_4.digitalWrite(true);
+                        this._motor_pin_5.digitalWrite(false);
                         break;
                     case 4:  // 11010
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(true);
-                        this.motor_pin_3.digitalWrite(false);
-                        this.motor_pin_4.digitalWrite(true);
-                        this.motor_pin_5.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(true);
+                        this._motor_pin_3.digitalWrite(false);
+                        this._motor_pin_4.digitalWrite(true);
+                        this._motor_pin_5.digitalWrite(false);
                         break;
                     case 5:  // 10010
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(false);
-                        this.motor_pin_3.digitalWrite(false);
-                        this.motor_pin_4.digitalWrite(true);
-                        this.motor_pin_5.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(false);
+                        this._motor_pin_3.digitalWrite(false);
+                        this._motor_pin_4.digitalWrite(true);
+                        this._motor_pin_5.digitalWrite(false);
                         break;
                     case 6:  // 10110
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(false);
-                        this.motor_pin_3.digitalWrite(true);
-                        this.motor_pin_4.digitalWrite(true);
-                        this.motor_pin_5.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(false);
+                        this._motor_pin_3.digitalWrite(true);
+                        this._motor_pin_4.digitalWrite(true);
+                        this._motor_pin_5.digitalWrite(false);
                         break;
                     case 7:  // 10100
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(false);
-                        this.motor_pin_3.digitalWrite(true);
-                        this.motor_pin_4.digitalWrite(false);
-                        this.motor_pin_5.digitalWrite(false);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(false);
+                        this._motor_pin_3.digitalWrite(true);
+                        this._motor_pin_4.digitalWrite(false);
+                        this._motor_pin_5.digitalWrite(false);
                         break;
                     case 8:  // 10101
-                        this.motor_pin_1.digitalWrite(true);
-                        this.motor_pin_2.digitalWrite(false);
-                        this.motor_pin_3.digitalWrite(true);
-                        this.motor_pin_4.digitalWrite(false);
-                        this.motor_pin_5.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(true);
+                        this._motor_pin_2.digitalWrite(false);
+                        this._motor_pin_3.digitalWrite(true);
+                        this._motor_pin_4.digitalWrite(false);
+                        this._motor_pin_5.digitalWrite(true);
                         break;
                     case 9:  // 00101
-                        this.motor_pin_1.digitalWrite(false);
-                        this.motor_pin_2.digitalWrite(false);
-                        this.motor_pin_3.digitalWrite(true);
-                        this.motor_pin_4.digitalWrite(false);
-                        this.motor_pin_5.digitalWrite(true);
+                        this._motor_pin_1.digitalWrite(false);
+                        this._motor_pin_2.digitalWrite(false);
+                        this._motor_pin_3.digitalWrite(true);
+                        this._motor_pin_4.digitalWrite(false);
+                        this._motor_pin_5.digitalWrite(true);
                         break;
                 }
             }
