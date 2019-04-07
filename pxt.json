@@ -9,12 +9,14 @@
     },
     "files": [
         "README.md",
-        "main.ts"
+        "main.ts",
+        "ns.ts",
+        "targetoverrides.ts"
     ],
     "testFiles": [
         "test.ts"
     ],
-    "public": false,
+    "public": true,
     "preferredEditor": "tsprj",
     "installedVersion": "workspace:2ca99e6f-1bc1-4707-d29e-950a27730267"
 }

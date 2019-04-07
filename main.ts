@@ -1,5 +1,5 @@
 /*
- * pxt-stepper- Stepper library for MakeCode - Version 1.1.0
+ * pxt-stepper- Stepper library for MakeCode - Version 0.0.1
  *
  * Original library Arduino(0.1)   by Tom Igoe.
  * Two-wire modifications  (0.2)   by Sebastian Gassner
@@ -91,25 +91,39 @@ namespace steppers {
         number_of_steps: number;
         pin_count: number;
         step_delay: number;
+        speed:number;
         
         /*
-        whatSpeed: number;
-        thisStep: number;
-        steps_to_move: number;
+
 */
         constructor(motor_pin_1: DigitalInOutPin, motor_pin_2: DigitalInOutPin, motor_pin_3: DigitalInOutPin, motor_pin_4: DigitalInOutPin, motor_pin_5: DigitalInOutPin) {
             this.step_number = 0;    
             this.direction = 0;   
             this.last_step_time = 0;
             this.step_delay = 0;
-            this.number_of_steps = undefined;
+            this.number_of_steps = 200;
             this._motor_pin_1 = motor_pin_1;
             this._motor_pin_2 = motor_pin_2;
             this._motor_pin_3 = motor_pin_3;
             this._motor_pin_4 = motor_pin_4;
             this._motor_pin_5 = motor_pin_5;
+            this.speed = 0;
         }
-
+        
+        /*
+         * Sets the speed in revs per minute
+         * @param speed in revs
+         */
+        //% weight=100 help=stepper/setSpeed
+        //% blockId=stepperspeed block="set stepper speed to %speed"
+        //% speed.defl=90
+        //% blockGap=8
+        //% parts=stepper
+        //% group="Configuration"
+        setSpeed(speed: number) {
+            this.step_delay = 60 * 1000 * 1000 / this.number_of_steps / speed;
+        }
+        
         /*
         *   constructor for four-pin version
         *   Sets which wires should control the motor.
@@ -132,17 +146,6 @@ namespace steppers {
 
             // pin_count is used by the stepMotor() method:
             this.pin_count = 4;
-        }
-
-        /*
-         * Sets the speed in revs per minute
-         */
-        //% weight=100 help=stepper/setSpeed
-        //% blockId=setspeed block="set stepper speed to %whatspeed"
-        //% blockGap=8
-        //% parts=stepper
-        setSpeed(whatspeed: number) {
-            this.step_delay = 60 * 1000 * 1000 / this.number_of_steps / whatspeed;
         }
         
         /*
