@@ -73,12 +73,12 @@
  *
  */
 //% weight=2 color=#005585 icon="\uf045"
-//% advanced=true blockGap=8
+//% blockGap=8
 //% groups='["Positional", "Continuous", "Configuration"]'
 namespace steppers {
-    
+
     export class Stepper {
-    
+
         _motor_pin_1: DigitalInOutPin;
         _motor_pin_2: DigitalInOutPin;
         _motor_pin_3: DigitalInOutPin;
@@ -91,14 +91,11 @@ namespace steppers {
         number_of_steps: number;
         pin_count: number;
         step_delay: number;
-        speed:number;
-        
-        /*
+        speed: number;
 
-*/
         constructor(motor_pin_1: DigitalInOutPin, motor_pin_2: DigitalInOutPin, motor_pin_3: DigitalInOutPin, motor_pin_4: DigitalInOutPin, motor_pin_5: DigitalInOutPin) {
-            this.step_number = 0;    
-            this.direction = 0;   
+            this.step_number = 0;
+            this.direction = 0;
             this.last_step_time = 0;
             this.step_delay = 0;
             this.number_of_steps = 200;
@@ -109,32 +106,23 @@ namespace steppers {
             this._motor_pin_5 = motor_pin_5;
             this.speed = 0;
         }
-        
-        /*
-         * Sets the speed in revs per minute
-         * @param speed in revs
-         */
-        //% weight=100 help=stepper/setSpeed
-        //% blockId=stepperspeed block="set stepper speed to %speed"
-        //% speed.defl=90
-        //% blockGap=8
-        //% parts=stepper
-        //% group="Configuration"
-        setSpeed(speed: number) {
-            this.step_delay = 60 * 1000 * 1000 / this.number_of_steps / speed;
-        }
-        
+
         /*
         *   constructor for four-pin version
         *   Sets which wires should control the motor.
+        * @param number_of_steps in revs
+        * @param motor_pin_1
+        * @param motor_pin_2
+        * @param motor_pin_3
+        * @param motor_pin_4
         */
-        //% weight=100 help=stepper/setSpeed
-        //% blockId=stepperset block="set stepper %number_of_steps %motor_pin_1 %motor_pin_2 %motor_pin_3 %motor_pin_4 %motor_pin_5"
+        //% weight=100 help=steppers/steppers
+        //% blockId=stepperset block="%stepper| set %number_of_steps %motor_pin_1 %motor_pin_2 %motor_pin_3 %motor_pin_4"
         //% number_of_steps.defl=500
         //% blockGap=8
         //% parts=stepper
         //% group="Configuration"
-        setStepper(number_of_steps: number, motor_pin_1: DigitalInOutPin, motor_pin_2: DigitalInOutPin, motor_pin_3: DigitalInOutPin, motor_pin_4: DigitalInOutPin){
+        public setStepper(number_of_steps: number, motor_pin_1: DigitalInOutPin, motor_pin_2: DigitalInOutPin, motor_pin_3: DigitalInOutPin, motor_pin_4: DigitalInOutPin) {
             this.step_number = 0;    // which step the motor is on
             this.direction = 0;      // motor direction
             this.last_step_time = 0; // time stamp in us of the last step taken
@@ -147,17 +135,33 @@ namespace steppers {
             // pin_count is used by the stepMotor() method:
             this.pin_count = 4;
         }
-        
+
+        /*
+        * Sets the speed in revs per minute
+        * @param speed in revs
+        */
+        //% weight=100 help=steppers/setSpeed
+        //% blockId=stepperspeed block="%stepper set run at %speed "
+        //% speed.defl=90
+        //% blockGap=8
+        //% parts=stepper
+        //% group="Configuration"
+        public setSpeed(speed: number) {
+            this.step_delay = 60 * 1000 * 1000 / this.number_of_steps / speed;
+            //console.log("velocidad"+speed)
+        }
+
         /*
         * Moves the motor forward or backwards.
+        * @param thisstep
         */
-        //% weight=100 help=servos/set-angle
-        //% blockId=steppermove block="set stepper move %thisstep"
+        //% weight=100 help=steppers/stepMotor
+        //% blockId=steppermove block="%stepper set move %thisstep"
         //% thisstep.defl=0
         //% blockGap=8
         //% parts=stepper trackArgs=0
         //% group="Positional"
-        stepMotor(thisstep: number): void {
+        public stepMotor(thisstep: number): void {
             if (this.pin_count == 2) {
                 switch (thisstep) {
                     case 0:  // 01
@@ -282,18 +286,19 @@ namespace steppers {
                 }
             }
         }
-        
+
         /*
         * Moves the motor steps_to_move steps.  If the number is negative,
         * the motor moves in the reverse direction.
+        * @param steps_to_move
         */
-        //% weight=100 help=stepper/set-angle
-        //% blockId=stepperstep block="set stepper step %steps_to_move"
+        //% weight=100 help=steppers/step
+        //% blockId=stepperstep block="%stepper set step %steps_to_move"
         //% steps_to_move.defl=0
         //% blockGap=8
         //% parts=stepper trackArgs=0
         //% group="Positional"
-        step(steps_to_move: number): void {
+        public step(steps_to_move: number): void {
             let steps_left = Math.abs(steps_to_move);  // how many steps to take
 
             // determine direction based on whether steps_to_mode is + or -:
@@ -331,20 +336,6 @@ namespace steppers {
                     else
                         this.stepMotor(this.step_number % 4);
                 }
-            }
-        }
-
-        /*
-        * version() returns the version of the library:
-        */
-        //% weight=100 help=stepper/set-angle
-        //% blockId=stepperversion block="get stepper extension version"
-        //% blockGap=8
-        //% parts=stepper trackArgs=0
-        //% group="Positional"
-        version() {
-            {
-                return 1
             }
         }
     }
