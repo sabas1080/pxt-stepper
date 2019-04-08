@@ -1,7 +1,7 @@
   {
-    "28byj-48": {
+    "stepper": {
         "visual": {
-            "image": "parts/gps.svg",
+            "image": "parts/stepper.svg",
             "width": 144,
             "height": 240.74899291992188,
             "pinDistance": 15,
@@ -16,7 +16,7 @@
         "numberOfPins": 4,
         "instantiation": {
             "kind": "function",
-            "fullyQualifiedName": "28byj-48.setStepper,28byj-48.setSpeed,28byj-48.stepMotor,28byj-48.step",
+            "fullyQualifiedName": "stepper.setStepper,stepper.setSpeed,stepper.stepMotor,stepper.step",
             "argumentRoles": [{
                     "pinInstantiationIdx": 0
                 }]

@@ -13,7 +13,7 @@
         "ns.ts",
         "targetoverrides.ts",
         "pxtparts.json",
-        "parts/28byj-48.svg"
+        "parts/stepper.svg"
     ],
     "testFiles": [
         "test.ts"
