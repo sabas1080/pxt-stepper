@@ -107,29 +107,25 @@ namespace steppers {
             this.speed = 0;
         }
 
+
         /*
         *   constructor for four-pin version
         *   Sets which wires should control the motor.
         * @param number_of_steps in revs
-        * @param motor_pin_1
-        * @param motor_pin_2
-        * @param motor_pin_3
-        * @param motor_pin_4
         */
         //% weight=100 help=steppers/steppers
-        //% blockId=stepperset block="%stepper| set %number_of_steps %motor_pin_1 %motor_pin_2 %motor_pin_3 %motor_pin_4"
+        //% blockId=stepperset block="%stepper| set %number_of_steps"
         //% number_of_steps.defl=500
         //% blockGap=8
         //% parts=stepper
         //% group="Configuration"
-        public setStepper(number_of_steps: number, motor_pin_1: DigitalInOutPin, motor_pin_2: DigitalInOutPin, motor_pin_3: DigitalInOutPin, motor_pin_4: DigitalInOutPin) {
+        public setStepper(number_of_steps: number) {
             this.step_number = 0;    // which step the motor is on
             this.direction = 0;      // motor direction
             this.last_step_time = 0; // time stamp in us of the last step taken
             this.number_of_steps = number_of_steps; // total number of steps for this motor
 
             // When there are 4 pins, set the others to 0:
-            //this._motor_pin_5 = 0;
             this._motor_pin_5.digitalWrite(false);
 
             // pin_count is used by the stepMotor() method:
@@ -148,7 +144,6 @@ namespace steppers {
         //% group="Configuration"
         public setSpeed(speed: number) {
             this.step_delay = 60 * 1000 * 1000 / this.number_of_steps / speed;
-            //console.log("velocidad"+speed)
         }
 
         /*
