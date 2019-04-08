@@ -11,7 +11,9 @@
         "README.md",
         "main.ts",
         "ns.ts",
-        "targetoverrides.ts"
+        "targetoverrides.ts",
+        "pxtparts.json",
+        "parts/28byj-48.svg"
     ],
     "testFiles": [
         "test.ts"
